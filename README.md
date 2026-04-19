@@ -1,6 +1,6 @@
-# Ampere Keepalive
+# Container Keepalive
 
-One-shot keepalive and recovery runner for `ampere.sh` accounts. It is designed to be developed locally and then scheduled from GitHub Actions.
+One-shot keepalive and recovery runner for the target container service. It is designed to be developed locally and then scheduled from GitHub Actions.
 
 ## What It Does
 
