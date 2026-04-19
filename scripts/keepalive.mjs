@@ -3,7 +3,7 @@
 import fs from "node:fs/promises";
 import path from "node:path";
 import process from "node:process";
-import { AmpereClient, mergeAccountConfig, summarizeStatusPayload } from "../lib/ampere-client.mjs";
+import { ServiceClient, mergeAccountConfig, summarizeStatusPayload } from "../lib/service-client.mjs";
 import { Logger } from "../lib/logging.mjs";
 import { recoverAccount } from "../lib/recovery.mjs";
 
@@ -68,7 +68,7 @@ async function heartbeat(client, logger, account, dryRun) {
     return { ok: true, finalState: "running" };
   }
 
-  const doneMarker = "__AMPERE_DONE__";
+  const doneMarker = "__KEEPALIVE_DONE__";
 
   if (dryRun) {
     await logger.log(`${account.name}: dry-run heartbeat command=${JSON.stringify(account.heartbeatCommand)}`);
@@ -89,7 +89,7 @@ async function heartbeat(client, logger, account, dryRun) {
 }
 
 async function handleAccount(account, logger, dryRun) {
-  const client = new AmpereClient(account);
+  const client = new ServiceClient(account);
   const status = await client.getStatus();
   const payload = status.json;
   const state = payload?.status || "unknown";

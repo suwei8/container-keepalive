@@ -1,4 +1,4 @@
-name: Ampere Recovery
+name: Container Recovery
 
 on:
   schedule:
@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
 
 concurrency:
-  group: ampere-recovery
+  group: container-recovery
   cancel-in-progress: false
 
 jobs:
@@ -25,7 +25,7 @@ jobs:
 
       - name: Render Config
         env:
-          AMPERE_SECONDARY_SESSION_B64: ${{ secrets.AMPERE_SECONDARY_SESSION_B64 }}
+          SERVICE_SECONDARY_SESSION_B64: ${{ secrets.SERVICE_SECONDARY_SESSION_B64 }}
         run: |
           node ./scripts/render-config.mjs \
             --mode recovery \
@@ -42,5 +42,5 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v7
         with:
-          name: ampere-recovery-${{ github.run_id }}
+          name: container-recovery-${{ github.run_id }}
           path: ./recovery.log

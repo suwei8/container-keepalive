@@ -1,5 +1,5 @@
 {
-  "name": "ampere-keepalive",
+  "name": "container-keepalive",
   "private": true,
   "type": "module",
   "scripts": {

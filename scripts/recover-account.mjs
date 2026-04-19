@@ -3,7 +3,7 @@
 import fs from "node:fs/promises";
 import path from "node:path";
 import process from "node:process";
-import { AmpereClient, mergeAccountConfig, summarizeStatusPayload } from "../lib/ampere-client.mjs";
+import { ServiceClient, mergeAccountConfig, summarizeStatusPayload } from "../lib/service-client.mjs";
 import { Logger } from "../lib/logging.mjs";
 import { RECOVERY_STATES, recoverAccount, waitForStateTransition } from "../lib/recovery.mjs";
 
@@ -52,7 +52,7 @@ async function main() {
   await logger.init();
   await logger.log(`recover start account=${merged.name} dryRun=${args.dryRun}`);
 
-  const client = new AmpereClient(merged);
+  const client = new ServiceClient(merged);
   const status = await client.getStatus();
   const payload = status.json;
   const state = payload?.status || "unknown";

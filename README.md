@@ -4,7 +4,7 @@ One-shot keepalive and recovery runner for the target container service. It is d
 
 ## What It Does
 
-- Checks multiple Ampere accounts in one run.
+- Checks multiple accounts in one run.
 - Wakes instances that are in `sleeping`, `expired`, or `archived`.
 - Optionally runs a lightweight terminal heartbeat command for healthy accounts.
 - Optionally tries `restart` and then `repair` for accounts stuck in `error` or `failed`.
@@ -14,7 +14,7 @@ One-shot keepalive and recovery runner for the target container service. It is d
 
 - `scripts/keepalive.mjs`: one-pass multi-account runner.
 - `scripts/recover-account.mjs`: manual recovery runner for a single account.
-- `lib/ampere-client.mjs`: session auth, API calls, terminal command execution.
+- `lib/service-client.mjs`: session auth, API calls, terminal command execution.
 - `lib/recovery.mjs`: restart-first recovery state machine.
 - `.github/workflows/keepalive.yml`: starter workflow for GitHub Actions.
 
@@ -46,7 +46,6 @@ Useful per-account fields:
 Dry run:
 
 ```bash
-cd /root/ampere-keepalive
 cp ./config/accounts.example.json ./config/accounts.json
 node ./scripts/keepalive.mjs --config ./config/accounts.json --dry-run
 ```
@@ -54,7 +53,6 @@ node ./scripts/keepalive.mjs --config ./config/accounts.json --dry-run
 Real run:
 
 ```bash
-cd /root/ampere-keepalive
 node ./scripts/keepalive.mjs \
   --config ./config/accounts.json \
   --log-file ./keepalive.log
@@ -63,7 +61,6 @@ node ./scripts/keepalive.mjs \
 Manual recovery for one account:
 
 ```bash
-cd /root/ampere-keepalive
 node ./scripts/recover-account.mjs \
   --config ./config/accounts.json \
   --account secondary \
@@ -74,8 +71,8 @@ node ./scripts/recover-account.mjs \
 
 Use two repository secrets:
 
-- `AMPERE_PRIMARY_SESSION_B64`
-- `AMPERE_SECONDARY_SESSION_B64`
+- `SERVICE_PRIMARY_SESSION_B64`
+- `SERVICE_SECONDARY_SESSION_B64`
 
 Each value is the full exported session JSON encoded as base64.
 

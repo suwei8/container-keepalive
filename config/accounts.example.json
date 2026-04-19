@@ -12,14 +12,14 @@
   "accounts": [
     {
       "name": "primary",
-      "sessionFile": "/root/ampere-session.json",
+      "sessionFile": "/path/to/primary-session.json",
       "autoWake": true,
       "autoRecover": false,
-      "heartbeatCommand": "printf '__AMPERE_HEARTBEAT__\\n'"
+      "heartbeatCommand": "printf '__KEEPALIVE_HEARTBEAT__\\n'"
     },
     {
       "name": "secondary",
-      "sessionFile": "/root/ampere-session2.json",
+      "sessionFile": "/path/to/secondary-session.json",
       "autoWake": true,
       "autoRecover": true,
       "restartFirst": true

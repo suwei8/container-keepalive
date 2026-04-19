@@ -37,7 +37,7 @@ function requireEnv(name) {
 }
 
 function buildConfig(mode) {
-  const secondarySessionBase64 = requireEnv("AMPERE_SECONDARY_SESSION_B64");
+  const secondarySessionBase64 = requireEnv("SERVICE_SECONDARY_SESSION_B64");
 
   const defaults = {
     autoWake: true,
@@ -66,7 +66,7 @@ function buildConfig(mode) {
     };
   }
 
-  const primarySessionBase64 = requireEnv("AMPERE_PRIMARY_SESSION_B64");
+  const primarySessionBase64 = requireEnv("SERVICE_PRIMARY_SESSION_B64");
 
   return {
     defaults,
@@ -76,7 +76,7 @@ function buildConfig(mode) {
         sessionBase64: primarySessionBase64,
         autoWake: true,
         autoRecover: false,
-        heartbeatCommand: "printf '__AMPERE_HEARTBEAT__\\n'",
+        heartbeatCommand: "printf '__KEEPALIVE_HEARTBEAT__\\n'",
       },
       {
         name: "secondary",
