@@ -45,7 +45,7 @@ function buildConfig(mode) {
     restartFirst: true,
     pollMs: mode === "recovery" ? 5000 : 7000,
     wakeTimeoutMs: 180000,
-    recoveryTimeoutMs: mode === "recovery" ? 330000 : 300000,
+    recoveryTimeoutMs: mode === "recovery" ? 240000 : 300000,
     heartbeatTimeoutMs: 10000,
     ignoreFailure: false,
   };
