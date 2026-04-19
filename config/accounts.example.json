@@ -1,0 +1,28 @@
+{
+  "defaults": {
+    "autoWake": true,
+    "autoRecover": false,
+    "restartFirst": true,
+    "pollMs": 7000,
+    "wakeTimeoutMs": 180000,
+    "recoveryTimeoutMs": 300000,
+    "heartbeatTimeoutMs": 10000,
+    "ignoreFailure": false
+  },
+  "accounts": [
+    {
+      "name": "primary",
+      "sessionFile": "/root/ampere-session.json",
+      "autoWake": true,
+      "autoRecover": false,
+      "heartbeatCommand": "printf '__AMPERE_HEARTBEAT__\\n'"
+    },
+    {
+      "name": "secondary",
+      "sessionFile": "/root/ampere-session2.json",
+      "autoWake": true,
+      "autoRecover": true,
+      "restartFirst": true
+    }
+  ]
+}

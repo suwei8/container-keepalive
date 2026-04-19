@@ -1,0 +1,46 @@
+name: Ampere Recovery
+
+on:
+  schedule:
+    - cron: "*/5 * * * *"
+  workflow_dispatch:
+
+concurrency:
+  group: ampere-recovery
+  cancel-in-progress: false
+
+jobs:
+  recovery:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Render Config
+        env:
+          AMPERE_SECONDARY_SESSION_B64: ${{ secrets.AMPERE_SECONDARY_SESSION_B64 }}
+        run: |
+          node ./scripts/render-config.mjs \
+            --mode recovery \
+            --output ./config/accounts.json
+
+      - name: Run Recovery
+        run: |
+          node ./scripts/recover-account.mjs \
+            --config ./config/accounts.json \
+            --account secondary \
+            --log-file ./recovery.log
+
+      - name: Upload Logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ampere-recovery-${{ github.run_id }}
+          path: ./recovery.log

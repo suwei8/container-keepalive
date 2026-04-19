@@ -1,0 +1,47 @@
+name: Ampere Keepalive
+
+on:
+  schedule:
+    - cron: "7,22,37,52 * * * *"
+  workflow_dispatch:
+
+concurrency:
+  group: ampere-keepalive
+  cancel-in-progress: false
+
+jobs:
+  keepalive:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Render Config
+        env:
+          AMPERE_PRIMARY_SESSION_B64: ${{ secrets.AMPERE_PRIMARY_SESSION_B64 }}
+          AMPERE_SECONDARY_SESSION_B64: ${{ secrets.AMPERE_SECONDARY_SESSION_B64 }}
+        run: |
+          node ./scripts/render-config.mjs \
+            --mode keepalive \
+            --output ./config/accounts.json
+
+      - name: Run Keepalive
+        run: |
+          node ./scripts/keepalive.mjs \
+            --config ./config/accounts.json \
+            --log-file ./keepalive.log
+
+      - name: Upload Logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ampere-keepalive-${{ github.run_id }}
+          path: ./keepalive.log
+

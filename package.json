@@ -1,0 +1,9 @@
+{
+  "name": "ampere-keepalive",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "keepalive": "node ./scripts/keepalive.mjs",
+    "recover": "node ./scripts/recover-account.mjs"
+  }
+}
