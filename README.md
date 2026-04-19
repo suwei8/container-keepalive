@@ -63,16 +63,17 @@ Manual recovery for one account:
 ```bash
 node ./scripts/recover-account.mjs \
   --config ./config/accounts.json \
-  --account secondary \
-  --log-file ./secondary-recovery.log
+  --account jiyuanlihuizi \
+  --log-file ./recovery.log
 ```
 
 ## GitHub Actions
 
-Use two repository secrets:
+Use three repository secrets:
 
-- `SERVICE_PRIMARY_SESSION_B64`
-- `SERVICE_SECONDARY_SESSION_B64`
+- `SERVICE_HELENPAYNE261_SESSION_B64`
+- `SERVICE_LIMING737_SESSION_B64`
+- `SERVICE_JIYUANLIHUIZI_SESSION_B64`
 
 Each value is the full exported session JSON encoded as base64.
 
@@ -80,8 +81,8 @@ The repository keeps only public workflow logic. Runtime config is rendered on t
 
 Workflow layout:
 
-- `.github/workflows/keepalive.yml`: scheduled keepalive for the healthy account set.
-- `.github/workflows/recovery.yml`: higher-frequency recovery attempts for the broken account.
+- `.github/workflows/keepalive.yml`: scheduled keepalive for `helenpayne261` and `liming737`.
+- `.github/workflows/recovery.yml`: higher-frequency recovery attempts for `jiyuanlihuizi`.
 
 ## Notes
 

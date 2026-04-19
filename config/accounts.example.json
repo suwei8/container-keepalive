@@ -11,15 +11,22 @@
   },
   "accounts": [
     {
-      "name": "primary",
-      "sessionFile": "/path/to/primary-session.json",
+      "name": "helenpayne261",
+      "sessionFile": "/path/to/helenpayne261-session.json",
       "autoWake": true,
       "autoRecover": false,
       "heartbeatCommand": "printf '__KEEPALIVE_HEARTBEAT__\\n'"
     },
     {
-      "name": "secondary",
-      "sessionFile": "/path/to/secondary-session.json",
+      "name": "liming737",
+      "sessionFile": "/path/to/liming737-session.json",
+      "autoWake": true,
+      "autoRecover": false,
+      "heartbeatCommand": "printf '__KEEPALIVE_HEARTBEAT__\\n'"
+    },
+    {
+      "name": "jiyuanlihuizi",
+      "sessionFile": "/path/to/jiyuanlihuizi-session.json",
       "autoWake": true,
       "autoRecover": true,
       "restartFirst": true

@@ -25,8 +25,8 @@ jobs:
 
       - name: Render Config
         env:
-          SERVICE_PRIMARY_SESSION_B64: ${{ secrets.SERVICE_PRIMARY_SESSION_B64 }}
-          SERVICE_SECONDARY_SESSION_B64: ${{ secrets.SERVICE_SECONDARY_SESSION_B64 }}
+          SERVICE_HELENPAYNE261_SESSION_B64: ${{ secrets.SERVICE_HELENPAYNE261_SESSION_B64 }}
+          SERVICE_LIMING737_SESSION_B64: ${{ secrets.SERVICE_LIMING737_SESSION_B64 }}
         run: |
           node ./scripts/render-config.mjs \
             --mode keepalive \

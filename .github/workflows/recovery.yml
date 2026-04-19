@@ -25,7 +25,7 @@ jobs:
 
       - name: Render Config
         env:
-          SERVICE_SECONDARY_SESSION_B64: ${{ secrets.SERVICE_SECONDARY_SESSION_B64 }}
+          SERVICE_JIYUANLIHUIZI_SESSION_B64: ${{ secrets.SERVICE_JIYUANLIHUIZI_SESSION_B64 }}
         run: |
           node ./scripts/render-config.mjs \
             --mode recovery \
@@ -35,7 +35,7 @@ jobs:
         run: |
           node ./scripts/recover-account.mjs \
             --config ./config/accounts.json \
-            --account secondary \
+            --account jiyuanlihuizi \
             --log-file ./recovery.log
 
       - name: Upload Logs

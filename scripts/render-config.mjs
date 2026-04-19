@@ -37,7 +37,7 @@ function requireEnv(name) {
 }
 
 function buildConfig(mode) {
-  const secondarySessionBase64 = requireEnv("SERVICE_SECONDARY_SESSION_B64");
+  const recoverySessionBase64 = requireEnv("SERVICE_JIYUANLIHUIZI_SESSION_B64");
 
   const defaults = {
     autoWake: true,
@@ -55,8 +55,8 @@ function buildConfig(mode) {
       defaults,
       accounts: [
         {
-          name: "secondary",
-          sessionBase64: secondarySessionBase64,
+          name: "jiyuanlihuizi",
+          sessionBase64: recoverySessionBase64,
           autoWake: true,
           autoRecover: true,
           acceptInProgressTimeout: true,
@@ -66,23 +66,25 @@ function buildConfig(mode) {
     };
   }
 
-  const primarySessionBase64 = requireEnv("SERVICE_PRIMARY_SESSION_B64");
+  const helenpayne261SessionBase64 = requireEnv("SERVICE_HELENPAYNE261_SESSION_B64");
+  const liming737SessionBase64 = requireEnv("SERVICE_LIMING737_SESSION_B64");
 
   return {
     defaults,
     accounts: [
       {
-        name: "primary",
-        sessionBase64: primarySessionBase64,
+        name: "helenpayne261",
+        sessionBase64: helenpayne261SessionBase64,
         autoWake: true,
         autoRecover: false,
         heartbeatCommand: "printf '__KEEPALIVE_HEARTBEAT__\\n'",
       },
       {
-        name: "secondary",
-        sessionBase64: secondarySessionBase64,
+        name: "liming737",
+        sessionBase64: liming737SessionBase64,
         autoWake: true,
         autoRecover: false,
+        heartbeatCommand: "printf '__KEEPALIVE_HEARTBEAT__\\n'",
       },
     ],
   };
