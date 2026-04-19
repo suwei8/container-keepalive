@@ -69,10 +69,10 @@ async function main() {
   const shouldNotify = Boolean(previous.state && previous.state !== "running" && current.state === "running");
   if (shouldNotify) {
     const message = [
-      "Container Recovery Success",
-      `Account: ${current.name}`,
-      `Previous: ${previous.summary || previous.state}`,
-      `Current: ${current.summary}`,
+      "Ampere 恢复成功",
+      `账号: ${current.name}`,
+      `之前状态: ${previous.summary || previous.state}`,
+      `当前状态: ${current.summary}`,
     ].join("\n");
     await fs.writeFile(args.messageOut, `${message}\n`);
   }
@@ -88,4 +88,3 @@ main().catch((error) => {
   console.error(error.message);
   process.exitCode = 1;
 });
-

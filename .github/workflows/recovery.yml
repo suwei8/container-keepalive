@@ -53,7 +53,7 @@ jobs:
         run: |
           node ./scripts/status-report.mjs \
             --config ./config/accounts.json \
-            --title "Container Recovery Status" \
+            --title "Ampere 恢复状态" \
             --json-out ./recovery-status.json \
             --text-out ./recovery-status.txt
 

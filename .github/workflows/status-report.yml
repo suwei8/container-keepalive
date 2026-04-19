@@ -40,7 +40,7 @@ jobs:
         run: |
           node ./scripts/status-report.mjs \
             --config ./config/accounts.json \
-            --title "Container Daily Status" \
+            --title "Ampere 账号状态日报" \
             --json-out ./daily-status.json \
             --text-out ./daily-status.txt
 

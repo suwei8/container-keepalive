@@ -49,7 +49,7 @@ function renderText(title, results) {
   const lines = [
     title,
     `UTC: ${formatTime(now, "UTC")}`,
-    `Beijing: ${formatTime(now, "Asia/Shanghai")}`,
+    `北京时间: ${formatTime(now, "Asia/Shanghai")}`,
     "",
   ];
 
@@ -103,4 +103,3 @@ main().catch((error) => {
   console.error(error.message);
   process.exitCode = 1;
 });
-

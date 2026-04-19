@@ -56,12 +56,12 @@ jobs:
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
         run: |
           {
-            echo "Container Keepalive Failure"
-            echo "Workflow: ${GITHUB_WORKFLOW}"
-            echo "Run: ${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"
+            echo "Ampere 保活异常"
+            echo "工作流: ${GITHUB_WORKFLOW}"
+            echo "运行地址: ${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"
             if [ -f ./keepalive.log ]; then
               echo
-              echo "Log tail:"
+              echo "日志尾部:"
               tail -n 20 ./keepalive.log
             fi
           } > ./keepalive-failure.txt
