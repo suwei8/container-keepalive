@@ -5,7 +5,10 @@ import path from "node:path";
 import process from "node:process";
 import { ServiceClient, mergeAccountConfig, summarizeStatusPayload } from "../lib/service-client.mjs";
 import { Logger } from "../lib/logging.mjs";
-import { recoverAccount } from "../lib/recovery.mjs";
+import { RECOVERY_STATES, recoverAccount } from "../lib/recovery.mjs";
+
+const HEALTHY_STATES = new Set(["running", "degraded"]);
+const SLEEP_STATES = new Set(["sleeping", "expired", "archived"]);
 
 function parseArgs(argv) {
   const out = {
@@ -53,8 +56,12 @@ async function waitForWake(client, logger, account) {
       lastSummary = summary;
     }
 
-    if (!["sleeping", "expired", "archived", "waking"].includes(state)) {
-      return { ok: state === "running", finalState: state, payload };
+    if (HEALTHY_STATES.has(state)) {
+      return { ok: true, finalState: state, payload };
+    }
+
+    if (!SLEEP_STATES.has(state) && !RECOVERY_STATES.has(state)) {
+      return { ok: false, finalState: state, payload };
     }
 
     await sleep(account.pollMs);
@@ -96,11 +103,11 @@ async function handleAccount(account, logger, dryRun) {
   const summary = payload ? summarizeStatusPayload(payload) : status.text;
   await logger.log(`${account.name}: initial status ${status.status} ${summary}`);
 
-  if (["running", "degraded"].includes(state)) {
+  if (HEALTHY_STATES.has(state)) {
     return heartbeat(client, logger, account, dryRun);
   }
 
-  if (["sleeping", "expired", "archived"].includes(state) && account.autoWake) {
+  if (SLEEP_STATES.has(state) && account.autoWake) {
     if (dryRun) {
       await logger.log(`${account.name}: dry-run wake`);
       return { ok: true, finalState: "dry-run" };
@@ -115,7 +122,7 @@ async function handleAccount(account, logger, dryRun) {
     return recoverAccount(client, logger, account, { dryRun });
   }
 
-  if (["queued", "creating_server", "creating_container", "installing", "pushing_config", "starting_gateway", "waking", "restarting", "provisioning", "migrating"].includes(state)) {
+  if (RECOVERY_STATES.has(state)) {
     await logger.log(`${account.name}: instance already in progress state=${state}`);
     return { ok: true, finalState: state };
   }
