@@ -1,4 +1,7 @@
 .env
 config/accounts.json
+config/*-session.json
 *.log
+*.har
+ampere-session*.json
 
