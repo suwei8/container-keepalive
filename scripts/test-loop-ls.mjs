@@ -128,14 +128,23 @@ async function runAccountLoop({ name, session }, args) {
     let ws = null;
     let sendTimer = null;
     let pingTimer = null;
+    let staleTimer = null;
     let promptSeen = false;
+    let lastMessageAt = Date.now();
     const connectStartedAt = Date.now();
+    // If we don't receive ANY data from the server in this many ms, the
+    // connection is treated as dead (half-open) and force-closed to trigger
+    // a reconnect. Must be > heartbeat interval so a normal interval doesn't
+    // trigger it.
+    const staleTimeoutMs = Math.max(args.interval * 2 + 30_000, 120_000);
 
     const stopTimers = () => {
       if (sendTimer) clearInterval(sendTimer);
       if (pingTimer) clearInterval(pingTimer);
+      if (staleTimer) clearInterval(staleTimer);
       sendTimer = null;
       pingTimer = null;
+      staleTimer = null;
     };
 
     try {
@@ -162,15 +171,29 @@ async function runAccountLoop({ name, session }, args) {
     if (ws) {
       ws.addEventListener("open", () => {
         log("websocket opened");
+        lastMessageAt = Date.now();
         ws.send(JSON.stringify({ type: "resize", cols: 120, rows: 40 }));
         pingTimer = setInterval(() => {
           if (ws.readyState === WebSocket.OPEN) {
             ws.send(JSON.stringify({ type: "ping" }));
           }
         }, 25_000);
+        staleTimer = setInterval(() => {
+          const idle = Date.now() - lastMessageAt;
+          if (idle > staleTimeoutMs) {
+            log(
+              `no data received for ${Math.round(idle / 1000)}s; closing stale socket to reconnect`,
+            );
+            try {
+              ws.terminate?.();
+              ws.close(4000, "stale");
+            } catch {}
+          }
+        }, 15_000);
       });
 
       ws.addEventListener("message", async (event) => {
+        lastMessageAt = Date.now();
         let buf;
         if (typeof event.data === "string") {
           buf = Buffer.from(event.data, "utf8");
